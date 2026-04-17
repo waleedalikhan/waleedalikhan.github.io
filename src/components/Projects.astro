@@ -1,0 +1,75 @@
+---
+import { projects, projectFilters } from '../data/projects';
+import ProjectCard from './ProjectCard.astro';
+---
+
+<section id="work" class="section" aria-labelledby="work-title">
+	<div class="container-frame">
+		<header class="flex flex-col gap-8" data-reveal>
+			<div class="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+				<div>
+					<p class="eyebrow">01 · Selected Work</p>
+					<h2
+						id="work-title"
+						class="mt-4 text-balance text-[clamp(1.875rem,5vw,3.5rem)] font-bold leading-tight tracking-tight"
+					>
+						Products I've shaped —
+						<span class="text-[color:var(--color-lime)]">not just shipped</span>.
+					</h2>
+				</div>
+				<p class="max-w-md text-[color:var(--color-ink-dim)]">
+					A curated slice of SaaS, OSS, and marketing surfaces. Every tile is a product
+					with real users in production today.
+				</p>
+			</div>
+
+			{/* --- Filter chips --- */}
+			<div
+				class="flex flex-wrap gap-2"
+				role="toolbar"
+				aria-label="Filter projects by tag"
+			>
+				<button
+					type="button"
+					class="chip"
+					data-filter-chip="all"
+					aria-pressed="true"
+				>
+					All
+					<span class="font-mono text-[0.65rem] text-[color:var(--color-ink-mute)]">
+						{projects.length}
+					</span>
+				</button>
+				{
+					projectFilters.map((tag) => {
+						const count = projects.filter((p) => p.tags.includes(tag)).length;
+						return (
+							<button
+								type="button"
+								class="chip"
+								data-filter-chip={tag}
+								aria-pressed="false"
+							>
+								{tag}
+								<span class="font-mono text-[0.65rem] text-[color:var(--color-ink-mute)]">
+									{count}
+								</span>
+							</button>
+						);
+					})
+				}
+			</div>
+		</header>
+
+		{/* --- Bento grid --- */}
+		<div
+			class="mt-12 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-12 lg:auto-rows-[minmax(220px,auto)]"
+		>
+			{projects.map((project, i) => <ProjectCard project={project} index={i} />)}
+		</div>
+	</div>
+</section>
+
+<script>
+	import '../scripts/bento.ts';
+</script>

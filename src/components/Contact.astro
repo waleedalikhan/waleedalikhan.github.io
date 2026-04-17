@@ -1,0 +1,110 @@
+---
+import { site, socials } from '../data/site';
+import Icon from './Icon.astro';
+---
+
+<section id="contact" class="section" aria-labelledby="contact-title">
+	<div class="container-frame">
+		<div
+			class="relative overflow-hidden rounded-3xl border border-[color:var(--color-hairline-strong)] bg-gradient-to-br from-[color:var(--color-obsidian-panel)] via-[color:var(--color-obsidian-raised)] to-[color:var(--color-obsidian)] p-6 sm:rounded-[2rem] sm:p-10 md:p-14 lg:p-20"
+			data-reveal
+		>
+			{/* --- Backdrop --- */}
+			<div
+				class="pointer-events-none absolute -right-24 -top-24 h-[420px] w-[420px] rounded-full blur-[120px]"
+				style="background: radial-gradient(closest-side, rgba(99,102,241,0.35), transparent 70%);"
+				aria-hidden="true"
+			></div>
+			<div
+				class="pointer-events-none absolute -bottom-28 -left-24 h-[420px] w-[420px] rounded-full blur-[120px]"
+				style="background: radial-gradient(closest-side, rgba(190,242,100,0.15), transparent 70%);"
+				aria-hidden="true"
+			></div>
+
+			<div class="relative flex flex-col gap-10">
+				<div class="flex flex-col gap-4">
+					<p class="eyebrow">04 · Next move</p>
+					<h2
+						id="contact-title"
+						class="text-balance text-[clamp(2rem,6vw,4.5rem)] font-bold leading-[1.02] tracking-tight"
+					>
+						Have a product worth <span class="text-[color:var(--color-lime)]">building right?</span>
+					</h2>
+					<p class="max-w-xl text-lg text-[color:var(--color-ink-dim)]">
+						I take on a small number of senior engagements each quarter — architecture
+						reviews, greenfield builds, and long-horizon product partnerships.
+					</p>
+				</div>
+
+				<div class="grid gap-4 sm:grid-cols-[auto_1fr] sm:items-center">
+					<a
+						href={socials.email}
+						data-magnetic
+						aria-label={`Email ${site.email}`}
+						class="btn-primary w-full justify-center sm:w-auto sm:justify-start"
+					>
+						<Icon name="mail" size={16} />
+						<span class="truncate">{site.email}</span>
+					</a>
+					<div class="flex flex-wrap gap-2">
+						<a
+							href={socials.linkedin}
+							target="_blank"
+							rel="noopener noreferrer"
+							data-magnetic
+							class="btn-secondary"
+						>
+							<Icon name="linkedin" size={16} />
+							<span>LinkedIn</span>
+						</a>
+						<a
+							href={socials.github}
+							target="_blank"
+							rel="noopener noreferrer"
+							data-magnetic
+							class="btn-secondary"
+						>
+							<Icon name="github" size={16} />
+							<span>GitHub</span>
+						</a>
+						<a href={socials.resume} download data-magnetic class="btn-secondary">
+							<Icon name="download" size={16} />
+							<span>Resume</span>
+						</a>
+					</div>
+				</div>
+
+				<dl
+					class="grid grid-cols-2 gap-6 border-t border-[color:var(--color-hairline)] pt-8 sm:grid-cols-3 lg:grid-cols-4"
+				>
+					<div>
+						<dt class="font-mono text-[0.7rem] uppercase tracking-[0.14em] text-[color:var(--color-ink-mute)]">
+							Based in
+						</dt>
+						<dd class="mt-1 text-sm text-[color:var(--color-ink)]">{site.location}</dd>
+					</div>
+					<div>
+						<dt class="font-mono text-[0.7rem] uppercase tracking-[0.14em] text-[color:var(--color-ink-mute)]">
+							Phone
+						</dt>
+						<dd class="mt-1 text-sm text-[color:var(--color-ink)]">{site.phone}</dd>
+					</div>
+					<div>
+						<dt class="font-mono text-[0.7rem] uppercase tracking-[0.14em] text-[color:var(--color-ink-mute)]">
+							Timezone
+						</dt>
+						<dd class="mt-1 text-sm text-[color:var(--color-ink)]">PKT · UTC+5</dd>
+					</div>
+					<div>
+						<dt class="font-mono text-[0.7rem] uppercase tracking-[0.14em] text-[color:var(--color-ink-mute)]">
+							Availability
+						</dt>
+						<dd class="mt-1 text-sm text-[color:var(--color-lime)]">
+							Open · Q2–Q3 2026
+						</dd>
+					</div>
+				</dl>
+			</div>
+		</div>
+	</div>
+</section>

@@ -1,0 +1,81 @@
+---
+import { skills } from '../data/skills';
+import Icon from './Icon.astro';
+---
+
+<section id="skills" class="section" aria-labelledby="skills-title">
+	<div class="container-frame">
+		<header class="flex flex-col gap-4 md:flex-row md:items-end md:justify-between" data-reveal>
+			<div>
+				<p class="eyebrow">03 · Technical Architecture</p>
+				<h2
+					id="skills-title"
+					class="mt-4 text-balance text-[clamp(1.875rem,5vw,3.5rem)] font-bold leading-tight tracking-tight"
+				>
+					A toolkit chosen for <span class="text-[color:var(--color-indigo-soft)]">scale</span>,
+					not trends.
+				</h2>
+			</div>
+			<p class="max-w-md text-[color:var(--color-ink-dim)]">
+				Every tool here has shipped into production. Depth over breadth — but enough
+				breadth to pick the right one each time.
+			</p>
+		</header>
+
+		<div class="mt-14 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+			{
+				skills.map((group, i) => (
+					<article
+						class="bento flex flex-col gap-5 p-6"
+						data-reveal
+						data-reveal-delay={i * 60}
+						aria-labelledby={`skill-${group.id}`}
+					>
+						<header class="flex items-center gap-3">
+							<span
+								class="grid size-9 place-items-center rounded-xl border border-[color:var(--color-hairline-strong)] bg-[color:var(--color-obsidian)] text-[color:var(--color-lime)]"
+								aria-hidden="true"
+							>
+								<Icon
+									name={
+										group.id === 'core'
+											? 'zap'
+											: group.id === 'styling'
+												? 'sparkles'
+												: group.id === 'backend'
+													? 'layers'
+													: group.id === 'mobile'
+														? 'code'
+														: group.id === 'testing'
+															? 'check'
+															: 'terminal'
+									}
+									size={16}
+								/>
+							</span>
+							<div>
+								<h3
+									id={`skill-${group.id}`}
+									class="text-base font-semibold text-[color:var(--color-ink)]"
+								>
+									{group.title}
+								</h3>
+								<p class="font-mono text-[0.7rem] uppercase tracking-[0.14em] text-[color:var(--color-ink-mute)]">
+									{group.tagline}
+								</p>
+							</div>
+						</header>
+
+						<ul class="flex flex-wrap gap-1.5" role="list">
+							{group.items.map((item) => (
+								<li class="rounded-full border border-[color:var(--color-hairline)] bg-[color:var(--color-obsidian-raised)] px-3 py-1.5 font-mono text-[0.78rem] text-[color:var(--color-ink-dim)] transition-colors hover:border-[color:var(--color-indigo-soft)] hover:text-[color:var(--color-ink)]">
+									{item}
+								</li>
+							))}
+						</ul>
+					</article>
+				))
+			}
+		</div>
+	</div>
+</section>

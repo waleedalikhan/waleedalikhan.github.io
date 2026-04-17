@@ -1,0 +1,117 @@
+---
+import { site } from '../data/site';
+import '../styles/global.css';
+
+export interface Props {
+	title?: string;
+	description?: string;
+	image?: string;
+	canonical?: string;
+	noindex?: boolean;
+}
+
+const {
+	title,
+	description = site.description,
+	image = site.ogImage,
+	canonical,
+	noindex = false,
+} = Astro.props;
+
+const fullTitle = title ? `${title} — ${site.name}` : `${site.name} — ${site.title}`;
+const canonicalUrl = canonical ?? new URL(Astro.url.pathname, site.url).toString();
+const imageUrl = new URL(image, site.url).toString();
+
+const personLd = {
+	'@context': 'https://schema.org',
+	'@type': 'Person',
+	name: site.name,
+	jobTitle: site.title,
+	description: site.description,
+	url: site.url,
+	email: site.email,
+	telephone: site.phone,
+	address: {
+		'@type': 'PostalAddress',
+		addressLocality: 'Lahore',
+		addressCountry: 'PK',
+	},
+	sameAs: [
+		'https://github.com/waleedalikhan',
+		'https://www.linkedin.com/in/waleedalikhan',
+	],
+};
+---
+
+<!doctype html>
+<html lang={site.locale} class="bg-[color:var(--color-obsidian)]">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+		{/* --- Primary meta --- */}
+		<title>{fullTitle}</title>
+		<meta name="description" content={description} />
+		<meta name="author" content={site.name} />
+		<meta name="generator" content={Astro.generator} />
+		<meta name="theme-color" content={site.themeColor} />
+		<meta name="color-scheme" content="dark" />
+		<link rel="canonical" href={canonicalUrl} />
+		{noindex && <meta name="robots" content="noindex,nofollow" />}
+
+		{/* --- Icons --- */}
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="icon" href="/favicon.ico" sizes="any" />
+		<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+		{/* --- Preconnects --- */}
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+		{/* --- Fonts --- */}
+		<link
+			rel="stylesheet"
+			href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
+		/>
+
+		{/* --- Open Graph --- */}
+		<meta property="og:type" content="website" />
+		<meta property="og:site_name" content={site.name} />
+		<meta property="og:title" content={fullTitle} />
+		<meta property="og:description" content={description} />
+		<meta property="og:url" content={canonicalUrl} />
+		<meta property="og:image" content={imageUrl} />
+		<meta property="og:image:width" content="1200" />
+		<meta property="og:image:height" content="630" />
+		<meta property="og:locale" content={site.locale} />
+
+		{/* --- Twitter --- */}
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content={fullTitle} />
+		<meta name="twitter:description" content={description} />
+		<meta name="twitter:image" content={imageUrl} />
+
+		{/* --- Structured data --- */}
+		<script type="application/ld+json" set:html={JSON.stringify(personLd)} />
+	</head>
+	<body class="ambient-glow">
+		<a
+			href="#main"
+			class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:rounded-lg focus:bg-[color:var(--color-lime)] focus:px-4 focus:py-2 focus:text-[color:var(--color-obsidian)] focus:font-semibold"
+		>
+			Skip to content
+		</a>
+
+		<slot />
+
+		{/* ---------------------------------------------------------
+		     Global client scripts — cursor glow + scroll reveal
+		     --------------------------------------------------------- */}
+		<script>
+			import '../scripts/cursor-glow.ts';
+			import '../scripts/reveal.ts';
+			import '../scripts/magnetic.ts';
+			import '../scripts/typing.ts';
+		</script>
+	</body>
+</html>

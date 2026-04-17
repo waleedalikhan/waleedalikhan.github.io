@@ -1,0 +1,162 @@
+---
+import { nav, site, socials } from '../data/site';
+import Icon from './Icon.astro';
+---
+
+<header
+	id="site-header"
+	class="fixed inset-x-0 top-0 z-50 transition-[background,border-color,backdrop-filter] duration-500 ease-out"
+	data-nav
+>
+	<div class="container-frame">
+		<div
+			class="glass mt-4 flex items-center justify-between rounded-2xl px-4 py-2.5 sm:px-5"
+		>
+			{/* --- Wordmark --- */}
+			<a
+				href="#top"
+				class="group flex items-center gap-2.5 font-mono text-sm"
+				aria-label={`${site.name} — home`}
+			>
+				<span
+					class="grid size-7 place-items-center rounded-lg border border-[color:var(--color-hairline-strong)] bg-[color:var(--color-obsidian-raised)] text-[color:var(--color-lime)] transition-colors group-hover:border-[color:var(--color-lime)]"
+					aria-hidden="true"
+				>
+					<span class="font-semibold text-[0.8rem] leading-none">w</span>
+				</span>
+				<span class="hidden text-[color:var(--color-ink)] sm:inline">
+					waleed<span class="text-[color:var(--color-lime)]">.</span>dev
+				</span>
+			</a>
+
+			{/* --- Desktop nav --- */}
+			<nav aria-label="Primary" class="hidden md:block">
+				<ul class="flex items-center gap-1">
+					{
+						nav.map((item) => (
+							<li>
+								<a
+									href={item.href}
+									class="rounded-full px-3.5 py-2 text-sm text-[color:var(--color-ink-dim)] transition-colors hover:text-[color:var(--color-ink)]"
+								>
+									{item.label}
+								</a>
+							</li>
+						))
+					}
+				</ul>
+			</nav>
+
+			{/* --- Right actions --- */}
+			<div class="flex items-center gap-2">
+				<a
+					href={socials.github}
+					target="_blank"
+					rel="noopener noreferrer"
+					aria-label="GitHub profile"
+					class="hidden size-9 items-center justify-center rounded-full border border-[color:var(--color-hairline)] text-[color:var(--color-ink-dim)] transition-colors hover:border-[color:var(--color-hairline-strong)] hover:text-[color:var(--color-ink)] sm:inline-flex"
+				>
+					<Icon name="github" size={16} />
+				</a>
+				<a
+					href={socials.email}
+					data-magnetic
+					data-magnetic-strength="0.25"
+					aria-label={`Email ${site.name}`}
+					class="btn-primary !py-2 !px-3.5 !text-sm"
+				>
+					<span>Let's talk</span>
+					<Icon name="arrow-up-right" size={14} />
+				</a>
+				<button
+					type="button"
+					aria-label="Toggle menu"
+					aria-expanded="false"
+					aria-controls="mobile-menu"
+					data-menu-toggle
+					class="inline-flex size-9 items-center justify-center rounded-full border border-[color:var(--color-hairline)] text-[color:var(--color-ink)] md:hidden"
+				>
+					<Icon name="menu" size={18} />
+				</button>
+			</div>
+		</div>
+
+		{/* --- Mobile menu --- */}
+		<div
+			id="mobile-menu"
+			hidden
+			class="glass mt-2 rounded-2xl p-2 md:hidden"
+			data-mobile-menu
+		>
+			<ul class="flex flex-col gap-0.5">
+				{
+					nav.map((item) => (
+						<li>
+							<a
+								href={item.href}
+								class="block rounded-xl px-4 py-3 text-sm text-[color:var(--color-ink-dim)] transition-colors hover:bg-white/5 hover:text-[color:var(--color-ink)]"
+							>
+								{item.label}
+							</a>
+						</li>
+					))
+				}
+				<li>
+					<a
+						href={socials.github}
+						target="_blank"
+						rel="noopener noreferrer"
+						class="block rounded-xl px-4 py-3 text-sm text-[color:var(--color-ink-dim)] transition-colors hover:bg-white/5 hover:text-[color:var(--color-ink)]"
+					>
+						GitHub ↗
+					</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+</header>
+
+<script>
+	// Scroll-state + mobile menu
+	const init = (): void => {
+		const header = document.querySelector<HTMLElement>('[data-nav]');
+		const toggle = document.querySelector<HTMLButtonElement>('[data-menu-toggle]');
+		const menu = document.querySelector<HTMLElement>('[data-mobile-menu]');
+		if (!header) return;
+
+		const onScroll = (): void => {
+			header.dataset.scrolled = window.scrollY > 12 ? 'true' : 'false';
+		};
+		onScroll();
+		window.addEventListener('scroll', onScroll, { passive: true });
+
+		if (toggle && menu) {
+			toggle.addEventListener('click', () => {
+				const isOpen = toggle.getAttribute('aria-expanded') === 'true';
+				toggle.setAttribute('aria-expanded', String(!isOpen));
+				if (isOpen) {
+					menu.hidden = true;
+				} else {
+					menu.hidden = false;
+				}
+			});
+			// close on link click
+			menu.querySelectorAll('a').forEach((link) => {
+				link.addEventListener('click', () => {
+					toggle.setAttribute('aria-expanded', 'false');
+					menu.hidden = true;
+				});
+			});
+		}
+	};
+	document.addEventListener('astro:page-load', init);
+	if (document.readyState !== 'loading') init();
+	else document.addEventListener('DOMContentLoaded', init);
+</script>
+
+<style>
+	[data-nav][data-scrolled='true'] .glass {
+		background: color-mix(in oklab, var(--color-obsidian) 82%, transparent);
+		border-color: var(--color-hairline-strong);
+	}
+</style>

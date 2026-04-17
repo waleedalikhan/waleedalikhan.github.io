@@ -1,0 +1,113 @@
+---
+import { experience } from '../data/experience';
+import Icon from './Icon.astro';
+---
+
+<section id="experience" class="section" aria-labelledby="experience-title">
+	<div class="container-frame">
+		<header class="flex flex-col gap-4 md:flex-row md:items-end md:justify-between" data-reveal>
+			<div>
+				<p class="eyebrow">02 · Trajectory</p>
+				<h2
+					id="experience-title"
+					class="mt-4 text-balance text-[clamp(1.875rem,5vw,3.5rem)] font-bold leading-tight tracking-tight"
+				>
+					Six years of shipping under <span class="text-[color:var(--color-indigo-soft)]">real constraints</span>.
+				</h2>
+			</div>
+			<p class="max-w-md text-[color:var(--color-ink-dim)]">
+				From storefronts to observability platforms — the through-line has always been
+				architecture that holds up when the product grows.
+			</p>
+		</header>
+
+		<ol class="relative mt-16 grid gap-6 md:gap-8" role="list">
+			{/* --- Rail line --- */}
+			<div
+				class="pointer-events-none absolute left-[10px] top-2 bottom-2 hidden w-px bg-gradient-to-b from-transparent via-[color:var(--color-hairline-strong)] to-transparent md:block"
+				aria-hidden="true"
+			></div>
+
+			{
+				experience.map((role, i) => (
+					<li
+						class="group relative grid grid-cols-1 gap-4 md:grid-cols-[auto_1fr] md:gap-10 md:pl-6"
+						data-reveal
+						data-reveal-delay={i * 80}
+					>
+						{/* Timeline dot */}
+						<div class="hidden items-start pt-6 md:flex">
+							<span class="relative grid size-5 -translate-x-1/2 place-items-center">
+								<span
+									class={`absolute inset-0 rounded-full border ${role.active ? 'border-[color:var(--color-lime)]' : 'border-[color:var(--color-hairline-strong)]'}`}
+									aria-hidden="true"
+								/>
+								<span
+									class={`size-2 rounded-full ${role.active ? 'bg-[color:var(--color-lime)] shadow-[0_0_16px_rgba(190,242,100,0.7)]' : 'bg-[color:var(--color-ink-mute)]'}`}
+									aria-hidden="true"
+								/>
+							</span>
+						</div>
+
+						<article class="group/card relative rounded-2xl border border-[color:var(--color-hairline)] bg-[color:var(--color-obsidian-panel)] p-6 transition-colors hover:border-[color:var(--color-hairline-strong)] sm:p-8">
+							<div class="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+								<div class="flex flex-wrap items-center gap-2">
+									{role.href ? (
+										<a
+											href={role.href}
+											target="_blank"
+											rel="noopener noreferrer"
+											class="inline-flex items-center gap-1.5 text-xl font-semibold text-[color:var(--color-ink)] transition-colors hover:text-[color:var(--color-lime)]"
+										>
+											{role.company}
+											<Icon name="external-link" size={14} class="opacity-60" />
+										</a>
+									) : (
+										<span class="text-xl font-semibold text-[color:var(--color-ink)]">
+											{role.company}
+										</span>
+									)}
+									<span class="hidden text-[color:var(--color-ink-mute)] sm:inline">·</span>
+									<span class="text-[color:var(--color-ink-dim)]">{role.title}</span>
+									{role.active && (
+										<span class="ml-1 inline-flex items-center gap-1.5 rounded-full border border-[color:var(--color-lime)]/40 bg-[color:var(--color-lime)]/10 px-2.5 py-0.5 text-[0.7rem] font-mono uppercase tracking-[0.12em] text-[color:var(--color-lime)]">
+											<span class="size-1.5 rounded-full bg-[color:var(--color-lime)]" />
+											Current
+										</span>
+									)}
+								</div>
+								<div class="flex items-center gap-4 font-mono text-[0.78rem] uppercase tracking-[0.12em] text-[color:var(--color-ink-mute)]">
+									<span class="inline-flex items-center gap-1.5">
+										<Icon name="map-pin" size={12} />
+										{role.location}
+									</span>
+									<span>{role.period}</span>
+								</div>
+							</div>
+
+							<ul class="mt-5 grid gap-2.5 text-[color:var(--color-ink-dim)]" role="list">
+								{role.highlights.map((h) => (
+									<li class="flex items-start gap-2.5 leading-relaxed">
+										<span
+											class="mt-2 size-1 shrink-0 rounded-full bg-[color:var(--color-indigo-soft)]"
+											aria-hidden="true"
+										/>
+										<span>{h}</span>
+									</li>
+								))}
+							</ul>
+
+							<ul class="mt-5 flex flex-wrap gap-1.5" role="list">
+								{role.stack.map((s) => (
+									<li class="rounded-full border border-[color:var(--color-hairline)] bg-[color:var(--color-obsidian-raised)] px-2.5 py-1 font-mono text-[0.7rem] tracking-wide text-[color:var(--color-ink-dim)]">
+										{s}
+									</li>
+								))}
+							</ul>
+						</article>
+					</li>
+				))
+			}
+		</ol>
+	</div>
+</section>

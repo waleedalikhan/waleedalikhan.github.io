@@ -1,0 +1,138 @@
+---
+import { site, socials } from '../data/site';
+import Icon from './Icon.astro';
+
+const typingWords = [
+	'Frontend Architect',
+	'Systems Designer',
+	'Product Engineer',
+	'Design Technologist',
+];
+---
+
+<section id="top" class="section relative overflow-hidden pt-28 sm:pt-36 md:pt-44" aria-labelledby="hero-title">
+	{/* --- Ambient grid + radial backdrop --- */}
+	<div class="pointer-events-none absolute inset-0 grid-bg opacity-60" aria-hidden="true"></div>
+	<div
+		class="pointer-events-none absolute -top-40 left-1/2 h-[520px] w-[520px] -translate-x-1/2 rounded-full blur-[120px]"
+		style="background: radial-gradient(closest-side, rgba(99,102,241,0.28), transparent 70%);"
+		aria-hidden="true"
+	></div>
+
+	<div class="container-frame relative">
+		<div class="flex flex-col gap-8 md:gap-10">
+			{/* --- Status ping --- */}
+			<div class="flex items-center gap-3" data-reveal>
+				<span class="relative grid size-2.5 place-items-center">
+					<span
+						class="absolute inline-block size-2.5 animate-ping rounded-full bg-[color:var(--color-lime)] opacity-75"
+					></span>
+					<span class="relative size-2 rounded-full bg-[color:var(--color-lime)]"></span>
+				</span>
+				<p class="font-mono text-xs uppercase tracking-[0.18em] text-[color:var(--color-ink-dim)]">
+					Available for Q2–Q3 engagements · {site.location}
+				</p>
+			</div>
+
+			{/* --- Terminal preamble --- */}
+			<div class="flex flex-wrap items-center gap-x-3 gap-y-1 font-mono text-xs sm:text-sm text-[color:var(--color-ink-dim)]" data-reveal data-reveal-delay="80">
+				<span class="text-[color:var(--color-lime)]">~/</span>
+				<span>whoami</span>
+				<span class="text-[color:var(--color-ink-mute)]">→</span>
+				<span class="text-[color:var(--color-ink)]">
+					<span data-typing data-typing-words={JSON.stringify(typingWords)}>Frontend Architect</span><span class="caret" aria-hidden="true"></span>
+				</span>
+			</div>
+
+			{/* --- Name --- */}
+			<h1
+				id="hero-title"
+				class="text-balance text-[clamp(2.5rem,9vw,7.5rem)] font-extrabold leading-[0.95] tracking-[-0.035em]"
+				data-reveal
+				data-reveal-delay="140"
+			>
+				<span class="block text-[color:var(--color-ink)]">Waleed Ali</span>
+				<span class="block text-gradient">Khan.</span>
+			</h1>
+
+			{/* --- Sub + tagline --- */}
+			<div class="grid gap-6 md:grid-cols-[1fr_auto] md:items-end">
+				<p
+					class="max-w-2xl text-balance text-lg leading-relaxed text-[color:var(--color-ink-dim)] sm:text-xl"
+					data-reveal
+					data-reveal-delay="220"
+				>
+					{site.tagline}
+					<span class="block pt-2 text-[color:var(--color-ink-mute)]">
+						Product-focused Senior Frontend Architect · 6+ years · Full-stack SaaS
+						across React, Next.js, Svelte 5, Vue, and Astro.
+					</span>
+				</p>
+
+				{/* --- Quick CTAs --- */}
+				<div
+					class="flex flex-wrap items-center gap-3"
+					data-reveal
+					data-reveal-delay="300"
+				>
+					<a
+						href={socials.resume}
+						download
+						data-magnetic
+						class="btn-primary"
+					>
+						<Icon name="download" size={16} />
+						<span>Resume</span>
+					</a>
+					<a
+						href={socials.github}
+						target="_blank"
+						rel="noopener noreferrer"
+						data-magnetic
+						class="btn-secondary"
+						aria-label="GitHub profile"
+					>
+						<Icon name="github" size={16} />
+						<span>GitHub</span>
+					</a>
+					<a
+						href={socials.linkedin}
+						target="_blank"
+						rel="noopener noreferrer"
+						data-magnetic
+						class="btn-secondary"
+						aria-label="LinkedIn profile"
+					>
+						<Icon name="linkedin" size={16} />
+						<span>LinkedIn</span>
+					</a>
+				</div>
+			</div>
+
+			{/* --- Spec strip --- */}
+			<dl
+				class="mt-4 grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-[color:var(--color-hairline)] bg-[color:var(--color-hairline)] sm:grid-cols-4"
+				data-reveal
+				data-reveal-delay="360"
+			>
+				{
+					[
+						{ k: 'Years shipping', v: '6+' },
+						{ k: 'Production SaaS', v: '20+' },
+						{ k: 'Avg. perf lift', v: '40–60%' },
+						{ k: 'Lighthouse floor', v: '95+' },
+					].map((item) => (
+						<div class="flex flex-col gap-1 bg-[color:var(--color-obsidian-panel)] p-5">
+							<dt class="font-mono text-[0.7rem] uppercase tracking-[0.14em] text-[color:var(--color-ink-mute)]">
+								{item.k}
+							</dt>
+							<dd class="text-2xl font-semibold tracking-tight text-[color:var(--color-ink)]">
+								{item.v}
+							</dd>
+						</div>
+					))
+				}
+			</dl>
+		</div>
+	</div>
+</section>
