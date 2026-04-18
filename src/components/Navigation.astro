@@ -117,8 +117,11 @@ import Icon from './Icon.astro';
 </header>
 
 <script>
-	// Scroll-state + mobile menu
+	// Scroll-state + mobile menu (outside click, delegated link close, idempotent init)
 	const init = (): void => {
+		if (document.documentElement.dataset.navWired === '1') return;
+		document.documentElement.dataset.navWired = '1';
+
 		const header = document.querySelector<HTMLElement>('[data-nav]');
 		const toggle = document.querySelector<HTMLButtonElement>('[data-menu-toggle]');
 		const menu = document.querySelector<HTMLElement>('[data-mobile-menu]');
@@ -130,24 +133,46 @@ import Icon from './Icon.astro';
 		onScroll();
 		window.addEventListener('scroll', onScroll, { passive: true });
 
-		if (toggle && menu) {
-			toggle.addEventListener('click', () => {
-				const isOpen = toggle.getAttribute('aria-expanded') === 'true';
-				toggle.setAttribute('aria-expanded', String(!isOpen));
-				if (isOpen) {
-					menu.hidden = true;
-				} else {
-					menu.hidden = false;
-				}
-			});
-			// close on link click
-			menu.querySelectorAll('a').forEach((link) => {
-				link.addEventListener('click', () => {
-					toggle.setAttribute('aria-expanded', 'false');
-					menu.hidden = true;
-				});
-			});
-		}
+		if (!toggle || !menu) return;
+
+		let onDocPointerDown: ((e: PointerEvent) => void) | undefined;
+
+		const closeMenu = (): void => {
+			toggle.setAttribute('aria-expanded', 'false');
+			menu.hidden = true;
+			if (onDocPointerDown) {
+				document.removeEventListener('pointerdown', onDocPointerDown, true);
+				onDocPointerDown = undefined;
+			}
+		};
+
+		const openMenu = (): void => {
+			toggle.setAttribute('aria-expanded', 'true');
+			menu.hidden = false;
+			onDocPointerDown = (e: PointerEvent): void => {
+				const t = e.target;
+				if (!(t instanceof Node)) return;
+				if (menu.contains(t) || toggle.contains(t)) return;
+				closeMenu();
+			};
+			document.addEventListener('pointerdown', onDocPointerDown, true);
+		};
+
+		toggle.addEventListener('click', () => {
+			const isOpen = toggle.getAttribute('aria-expanded') === 'true';
+			if (isOpen) closeMenu();
+			else openMenu();
+		});
+
+		menu.addEventListener('click', (e) => {
+			if (e.target instanceof Element && e.target.closest('a')) closeMenu();
+		});
+
+		document.addEventListener('keydown', (e) => {
+			if (e.key !== 'Escape') return;
+			if (toggle.getAttribute('aria-expanded') !== 'true') return;
+			closeMenu();
+		});
 	};
 	document.addEventListener('astro:page-load', init);
 	if (document.readyState !== 'loading') init();
