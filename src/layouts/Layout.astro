@@ -1,5 +1,6 @@
 ---
 import { site } from '../data/site';
+import WhatsAppFab from '../components/WhatsAppFab.astro';
 import '../styles/global.css';
 
 export interface Props {
@@ -103,6 +104,8 @@ const personLd = {
 		</a>
 
 		<slot />
+
+		<WhatsAppFab />
 
 		{/* ---------------------------------------------------------
 		     Global client scripts — cursor glow + scroll reveal
